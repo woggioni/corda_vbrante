@@ -1,0 +1,36 @@
+#include "matrix.hpp"
+
+#define N_POINT 200
+#define SAMPLE_NUMBER 1000
+#define SAMPLE_RATE 96000
+	
+void swap_endian(char* pt, bool_t byte_size);
+
+struct  WAV_header
+{
+    char                RIFF[4];        /* RIFF Header      */ //Magic header
+    unsigned       ChunkSize;      /* RIFF Chunk Size  */
+    char                WAVE[4];        /* WAVE Header      */
+    char                fmt[4];         /* FMT header       */
+    unsigned       Subchunk1Size;  /* Size of the fmt chunk                                */
+    unsigned short      AudioFormat;    /* Audio format 1=PCM,6=mulaw,7=alaw, 257=IBM Mu-Law, 258=IBM A-Law, 259=ADPCM */
+    unsigned short      NumOfChannels;      /* Number of channels 1=Mono 2=Sterio                   */
+    unsigned       SamplesPerSec;  /* Sampling Frequency in Hz                             */
+    unsigned      bytesPerSec;    /* bytes per second */
+    unsigned short      blockAlign;     /* 2=16-bit mono, 4=16-bit stereo */
+    unsigned short      bitsPerSample;  /* Number of bits per sample      */
+    char                Subchunk2ID[4]; /* "data"  string   */
+    unsigned      Subchunk2Size;  /* Sampled data length    */
+    void init(unsigned n_of_samples, unsigned short bit, unsigned short ch, unsigned hz);    
+};
+
+struct memory_storage{
+    wvector y;
+    wvector x;
+    wvector d2x;
+    wvector d1t;
+    wvector d2t;
+    short signed int* result;
+    memory_storage(void);
+    WAV_header head;
+    };
